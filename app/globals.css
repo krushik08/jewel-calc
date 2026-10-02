@@ -1,0 +1,116 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ─────────────────────────────────────────────────────────────
+   Light purple palette (shadcn tokens, oklch).
+   Change hue 293 → any other hue to re-theme the whole app.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.985 0.008 293);
+  --foreground: oklch(0.24 0.05 293);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.05 293);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.05 293);
+
+  --primary: oklch(0.55 0.2 293);
+  --primary-foreground: oklch(0.99 0.005 293);
+
+  --secondary: oklch(0.955 0.025 293);
+  --secondary-foreground: oklch(0.36 0.12 293);
+
+  --muted: oklch(0.965 0.015 293);
+  --muted-foreground: oklch(0.52 0.04 293);
+
+  --accent: oklch(0.94 0.04 293);
+  --accent-foreground: oklch(0.36 0.14 293);
+
+  --destructive: oklch(0.58 0.2 20);
+  --border: oklch(0.91 0.025 293);
+  --input: oklch(0.89 0.03 293);
+  --ring: oklch(0.65 0.17 293);
+
+  /* Semantic money colours */
+  --success: oklch(0.56 0.14 155);
+  --success-soft: oklch(0.96 0.04 155);
+  --fee: oklch(0.58 0.17 20);
+  --fee-soft: oklch(0.96 0.03 20);
+
+  /* Stone-type accents */
+  --stone-lab: oklch(0.58 0.13 240);
+  --stone-moissanite: oklch(0.6 0.16 320);
+  --stone-oldmine: oklch(0.62 0.12 70);
+}
+
+@theme inline {
+  --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Original Surfer", ui-rounded, system-ui, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-fee: var(--fee);
+  --color-fee-soft: var(--fee-soft);
+
+  --color-stone-lab: var(--stone-lab);
+  --color-stone-moissanite: var(--stone-moissanite);
+  --color-stone-oldmine: var(--stone-oldmine);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    background-image: radial-gradient(
+      ellipse 80% 50% at 50% -10%,
+      oklch(0.9 0.06 293 / 0.55),
+      transparent 70%
+    );
+    background-repeat: no-repeat;
+  }
+  /* Numbers line up in tables and price readouts */
+  /* Fixed-width digits so prices line up in columns and don't jitter while sliding */
+  .tabular {
+    font-variant-numeric: lining-nums tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  /* Original Surfer has one weight only — never let the browser fake-bold it */
+  .font-display {
+    font-weight: 400 !important;
+    font-synthesis: none;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+}
