@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect } from "react";
+
 import { SectionHeading } from "@/components/jewel-calc/layout/section-heading";
 import { AppFooter } from "@/components/jewel-calc/layout/app-footer";
 import { AppHeader } from "@/components/jewel-calc/layout/app-header";
@@ -7,21 +9,35 @@ import { OwnerPanel } from "@/components/jewel-calc/owner/owner-panel";
 import { AddRingPanel } from "@/components/jewel-calc/rings/add-ring-panel";
 import { RingsSection } from "@/components/jewel-calc/rings/rings-section";
 import { SummaryCards } from "@/components/jewel-calc/rings/summary-cards";
+import { JewelCalcV2App } from "@/components/jewel-calc/v2/jewel-calc-v2-app";
 import { useHydratedStore } from "@/hooks/use-hydrated-store";
 import { useRingRows } from "@/hooks/use-ring-rows";
 import { usePricingStore } from "@/store/pricing-store";
 
 export function JewelCalcApp() {
   const hydrated = useHydratedStore();
+  const appVersion = usePricingStore((s) => s.appVersion);
   const isOwner = usePricingStore((s) => s.isOwner);
   const rows = useRingRows();
 
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("data-version", appVersion);
+      document.body.setAttribute("data-version", appVersion);
+    }
+  }, [appVersion]);
+
   return (
-    <div className="mx-auto flex min-h-dvh max-w-7xl flex-col gap-8 px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8">
+    <div
+      data-version={appVersion}
+      className="mx-auto flex min-h-dvh max-w-7xl flex-col gap-8 px-4 pt-6 sm:px-6 sm:pt-8 lg:px-8"
+    >
       <AppHeader />
 
       {!hydrated ? (
         <LoadingState />
+      ) : appVersion === "v2" ? (
+        <JewelCalcV2App />
       ) : (
         <main className="flex flex-1 flex-col gap-8">
           {isOwner && <OwnerPanel />}

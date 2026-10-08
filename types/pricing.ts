@@ -82,3 +82,12 @@ export interface MultipleItemsDraftState {
   sides: MultipleSidesState;
 }
 
+export type AppVersion = "v1" | "v2";
+
+export interface V2MultipleVariantItem {
+  size: CenterSize;
+  enabled: boolean;
+  overrideWeight?: string;
+  sideCarats: string;
+}
+

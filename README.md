@@ -1,6 +1,9 @@
-# Jewel Calc — Next.js
+# Jewel Calc — Next.js (V1 & V2)
 
-Item pricing calculator (cost → sell price → MRP) rebuilt with **Next.js 16 (App Router) + Tailwind CSS v4 + shadcn/ui + Zustand**, light purple theme, fully responsive.
+Item pricing calculator (cost → sell price → MRP) built with **Next.js 16 (App Router) + Tailwind CSS v4 + shadcn/ui + Zustand**, featuring:
+- **V1 Classic**: Light purple theme, clean single & stepped items table.
+- **V2 Pro (Sunset Orange)**: Warm luxury orange aesthetic, redesigned interactive **Multiple Items** experience with variant matrices, quick-fill side stone presets, instant quote simulator, catalog search & filters, and bulk management.
+- **Header Version Switcher**: Seamless 1-click toggle between V1 and V2 with persistent state.
 
 ## Run
 

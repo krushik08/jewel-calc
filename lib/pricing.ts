@@ -1,4 +1,4 @@
-import { METAL_WEIGHT_FACTOR } from "@/lib/constants";
+import { METAL_LABEL, METAL_WEIGHT_FACTOR } from "@/lib/constants";
 import type {
   MetalKey,
   CostBreakdown,
@@ -49,4 +49,45 @@ export function convertMetalWeight(grams: number, from: MetalKey, to: MetalKey) 
 /** Stepped weights for a size series, e.g. base 3, step 0.5, count 6 → 3, 3.5, 4, 4.5, 5, 5.5 */
 export function steppedWeights(base: number, step: number, count: number) {
   return Array.from({ length: count }, (_, i) => round2(base + step * i));
+}
+
+export interface MetalComparisonRow {
+  metal: MetalKey;
+  label: string;
+  densityFactor: number;
+  ratePerGram: number;
+  grams: number;
+  cost: CostBreakdown;
+  price: PriceBreakdown;
+  draft: RingDraft;
+}
+
+const ALL_METALS: MetalKey[] = ["silver", "10k", "14k", "18k", "platinum"];
+
+/** Computes costs and prices across all 5 metal types for a single ring design. */
+export function calcAllMetalsComparison(
+  baseDraft: Omit<RingDraft, "metal"> & { baseMetal: MetalKey },
+  rates: Rates,
+  params: PricingParams
+): MetalComparisonRow[] {
+  return ALL_METALS.map((metal) => {
+    const grams = convertMetalWeight(baseDraft.grams, baseDraft.baseMetal, metal);
+    const draft: RingDraft = {
+      ...baseDraft,
+      metal,
+      grams,
+    };
+    const cost = calcCost(draft, rates);
+    const price = calcPrice(cost.total, params);
+    return {
+      metal,
+      label: METAL_LABEL[metal],
+      densityFactor: METAL_WEIGHT_FACTOR[metal],
+      ratePerGram: rates.metalPerGram[metal] ?? 0,
+      grams,
+      cost,
+      price,
+      draft,
+    };
+  });
 }

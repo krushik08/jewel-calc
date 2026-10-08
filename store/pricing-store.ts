@@ -12,6 +12,7 @@ import {
   STORAGE_KEY,
 } from "@/lib/constants";
 import type {
+  AppVersion,
   CenterSize,
   ItemKind,
   MetalKey,
@@ -26,6 +27,7 @@ import type {
 } from "@/types/pricing";
 
 interface PricingState {
+  appVersion: AppVersion;
   rates: Rates;
   params: PricingParams;
   rings: Ring[];
@@ -34,6 +36,7 @@ interface PricingState {
   activeTab: ItemKind;
   isOwner: boolean;
 
+  setAppVersion: (version: AppVersion) => void;
   setMetalRate: (metal: MetalKey, value: number) => void;
   setCenterRate: (stone: StoneType, size: CenterSize, value: number) => void;
   setSideRate: (stone: StoneType, value: number) => void;
@@ -45,6 +48,8 @@ interface PricingState {
   addRing: (draft: RingDraft) => void;
   addRings: (drafts: RingDraft[]) => void;
   removeRing: (id: string) => void;
+  deleteRings: (ids: string[]) => void;
+  duplicateRing: (id: string) => void;
   clearRings: () => void;
 
   setSingleDraft: (patch: Partial<SingleItemDraftState>) => void;
@@ -72,7 +77,7 @@ const cloneMultipleDraft = (): MultipleItemsDraftState => ({
 
 type PersistedState = Pick<
   PricingState,
-  "rates" | "params" | "rings" | "singleDraft" | "multipleDraft" | "activeTab" | "isOwner"
+  "appVersion" | "rates" | "params" | "rings" | "singleDraft" | "multipleDraft" | "activeTab" | "isOwner"
 >;
 
 /**
@@ -98,6 +103,7 @@ function migrate(persisted: unknown, fromVersion: number): PersistedState {
 export const usePricingStore = create<PricingState>()(
   persist(
     (set) => ({
+      appVersion: "v2",
       rates: cloneRates(),
       params: { ...DEFAULT_PARAMS },
       rings: [],
@@ -105,6 +111,8 @@ export const usePricingStore = create<PricingState>()(
       multipleDraft: cloneMultipleDraft(),
       activeTab: DEFAULT_ACTIVE_TAB,
       isOwner: false,
+
+      setAppVersion: (appVersion) => set({ appVersion }),
 
       setMetalRate: (metal, value) =>
         set((s) => ({
@@ -148,6 +156,19 @@ export const usePricingStore = create<PricingState>()(
           rings: [...s.rings, ...drafts.map((d) => ({ ...d, id: crypto.randomUUID() }))],
         })),
       removeRing: (id) => set((s) => ({ rings: s.rings.filter((r) => r.id !== id) })),
+      deleteRings: (ids) =>
+        set((s) => ({ rings: s.rings.filter((r) => !ids.includes(r.id)) })),
+      duplicateRing: (id) =>
+        set((s) => {
+          const target = s.rings.find((r) => r.id === id);
+          if (!target) return s;
+          const copy: Ring = {
+            ...target,
+            id: crypto.randomUUID(),
+            name: `${target.name} (Copy)`,
+          };
+          return { rings: [...s.rings, copy] };
+        }),
       clearRings: () => set({ rings: [] }),
 
       setSingleDraft: (patch) =>
@@ -173,6 +194,7 @@ export const usePricingStore = create<PricingState>()(
 
       resetAll: () =>
         set({
+          appVersion: "v2",
           rates: cloneRates(),
           params: { ...DEFAULT_PARAMS },
           rings: [],
@@ -191,7 +213,8 @@ export const usePricingStore = create<PricingState>()(
       storage: createJSONStorage(() => localStorage),
       // Rehydrated manually after mount to avoid SSR hydration mismatch.
       skipHydration: true,
-      partialize: ({ rates, params, rings, singleDraft, multipleDraft, activeTab, isOwner }) => ({
+      partialize: ({ appVersion, rates, params, rings, singleDraft, multipleDraft, activeTab, isOwner }) => ({
+        appVersion,
         rates,
         params,
         rings,
@@ -205,6 +228,7 @@ export const usePricingStore = create<PricingState>()(
         return {
           ...currentState,
           ...persisted,
+          appVersion: persisted.appVersion === "v1" ? "v1" : "v2",
           rates: {
             metalPerGram: {
               ...DEFAULT_RATES.metalPerGram,

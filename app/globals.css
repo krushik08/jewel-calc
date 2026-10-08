@@ -45,6 +45,50 @@
   --stone-oldmine: oklch(0.62 0.12 70);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   V2: Warm Orange / Sunset Amber Luxury Theme
+   Applied when [data-version="v2"] is present.
+   ───────────────────────────────────────────────────────────── */
+:root[data-version="v2"],
+body[data-version="v2"],
+[data-version="v2"] {
+  --background: oklch(0.985 0.012 60);
+  --foreground: oklch(0.22 0.045 42);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.045 42);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.045 42);
+
+  --primary: oklch(0.63 0.205 45); /* Radiant Sunset Orange */
+  --primary-foreground: oklch(0.99 0.005 50);
+
+  --secondary: oklch(0.955 0.035 55);
+  --secondary-foreground: oklch(0.35 0.12 38);
+
+  --muted: oklch(0.965 0.015 60);
+  --muted-foreground: oklch(0.50 0.04 45);
+
+  --accent: oklch(0.935 0.055 52);
+  --accent-foreground: oklch(0.35 0.14 40);
+
+  --destructive: oklch(0.58 0.2 20);
+  --border: oklch(0.90 0.03 55);
+  --input: oklch(0.88 0.035 55);
+  --ring: oklch(0.65 0.19 45);
+
+  /* Semantic money colours */
+  --success: oklch(0.56 0.14 150);
+  --success-soft: oklch(0.96 0.04 150);
+  --fee: oklch(0.58 0.17 25);
+  --fee-soft: oklch(0.96 0.03 25);
+
+  /* Stone-type accents */
+  --stone-lab: oklch(0.58 0.14 235);
+  --stone-moissanite: oklch(0.65 0.18 55);
+  --stone-oldmine: oklch(0.62 0.13 80);
+}
+
 @theme inline {
   --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Original Surfer", ui-rounded, system-ui, sans-serif;
@@ -95,6 +139,14 @@
       transparent 70%
     );
     background-repeat: no-repeat;
+  }
+  body[data-version="v2"],
+  :root[data-version="v2"] body {
+    background-image: radial-gradient(
+      ellipse 85% 55% at 50% -10%,
+      oklch(0.92 0.09 50 / 0.55),
+      transparent 70%
+    );
   }
   /* Numbers line up in tables and price readouts */
   /* Fixed-width digits so prices line up in columns and don't jitter while sliding */
