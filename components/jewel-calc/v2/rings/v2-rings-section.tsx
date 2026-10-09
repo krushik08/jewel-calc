@@ -286,7 +286,7 @@ export function V2RingsSection({ rows }: { rows: RingRow[] }) {
             )}
             {stoneFilter !== "all" && (
               <Badge variant="secondary" className="gap-1 text-[11px]">
-                Stone: {stoneFilter}
+                Stone: {STONE_META[stoneFilter as StoneType]?.label ?? stoneFilter}
                 <X className="size-3 cursor-pointer" onClick={() => setStoneFilter("all")} />
               </Badge>
             )}

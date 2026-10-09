@@ -262,6 +262,15 @@ export const usePricingStore = create<PricingState>()(
                   persisted.rates?.stones?.oldmine?.sidePerCarat ??
                   DEFAULT_RATES.stones.oldmine.sidePerCarat,
               },
+              oldmine_moissanite: {
+                center: {
+                  ...DEFAULT_RATES.stones.oldmine_moissanite.center,
+                  ...(persisted.rates?.stones?.oldmine_moissanite?.center || {}),
+                },
+                sidePerCarat:
+                  persisted.rates?.stones?.oldmine_moissanite?.sidePerCarat ??
+                  DEFAULT_RATES.stones.oldmine_moissanite.sidePerCarat,
+              },
             },
           },
           params: {

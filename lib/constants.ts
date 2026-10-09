@@ -51,6 +51,12 @@ export const STONE_TYPES: { key: StoneType; label: string; short: string; colorV
   { key: "lab", label: "Lab Grown Diamond", short: "LGD", colorVar: "var(--stone-lab)" },
   { key: "moissanite", label: "Moissanite", short: "Moissanite", colorVar: "var(--stone-moissanite)" },
   { key: "oldmine", label: "Old Mine Cut", short: "Old Mine Cut", colorVar: "var(--stone-oldmine)" },
+  {
+    key: "oldmine_moissanite",
+    label: "Old Mine Moissanite",
+    short: "OM Moissanite",
+    colorVar: "var(--stone-oldmine-moiss)",
+  },
 ];
 
 export const STONE_META = Object.fromEntries(STONE_TYPES.map((s) => [s.key, s])) as Record<
@@ -72,6 +78,10 @@ export const DEFAULT_RATES: Rates = {
     oldmine: {
       center: { "0.50": 90, "1.00": 180, "2.00": 350, "3.00": 520, "4.00": 750, "5.00": 950 },
       sidePerCarat: 120,
+    },
+    oldmine_moissanite: {
+      center: { "0.50": 20, "1.00": 40, "2.00": 80, "3.00": 120, "4.00": 160, "5.00": 200 },
+      sidePerCarat: 25,
     },
   },
 };

@@ -1,6 +1,6 @@
 export type MetalKey = "silver" | "10k" | "14k" | "18k" | "platinum";
 
-export type StoneType = "lab" | "moissanite" | "oldmine";
+export type StoneType = "lab" | "moissanite" | "oldmine" | "oldmine_moissanite";
 
 /** Which "Add New Item" tab an item was created from. */
 export type ItemKind = "single" | "multiple";
